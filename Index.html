@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vital Beet — Tu Dosis Diaria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & DEVOLUCIÓN DE MARCA (2026) ──────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --beet-neon: #FF1E56;
+  --beet-dim: #7D0A28;
+  --ginger-neon: #FFB347;
+  --text-main: #F4F4F6;
+  --text-muted: #A1A1AA;
+  --glass-bg: rgba(10, 10, 12, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --blur-heavy: blur(30px);
+  --blur-light: blur(16px);
+  --easing: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+html { 
+  scroll-behavior: smooth; 
+  background: #030305; 
+  color: var(--text-main); 
+  font-family: 'Manrope', sans-serif; 
+  overflow-x: hidden; 
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #030305; }
+::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--beet-neon); }
+
+/* ─── IMMERSIVE BACKGROUND INTERFACE ────────────────── */
+.editorial-bg {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2;
+  background-image: url('Gemini_Generated_Image_qktbm4qktbm4qktb.png');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+}
+.editorial-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
+  background: radial-gradient(circle at center, rgba(3, 3, 5, 0.3) 0%, rgba(3, 3, 5, 0.85) 75%, #030305 100%);
+}
+
+/* ─── CONTAINER ESTRUCTURAL CENTRAL ─────────────────── */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ─── NAVIGATION (ABSOLUTE FOR NO INTERFERENCE) ─────── */
+nav {
+  position: absolute; top: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 1000; display: flex; align-items: center; justify-content: space-between;
+  width: 90%; max-width: 750px; padding: 14px 28px;
+  background: rgba(5, 5, 8, 0.4); backdrop-filter: var(--blur-light);
+  -webkit-backdrop-filter: var(--blur-light); border: 1px solid var(--glass-border);
+  border-radius: 100px; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+}
+.nav-logo { font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-main); letter-spacing: 3px; }
+.nav-badge { font-family: 'Space Mono', monospace; font-size: 0.65rem; text-transform: uppercase; color: var(--ginger-neon); letter-spacing: 2px; background: rgba(255, 179, 71, 0.08); padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(255, 179, 71, 0.15); }
+
+/* ─── HERO ARCHITECTURE (MAXIMUM HIERARCHY) ────────── */
+.hero { 
+  min-height: 80svh; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  text-align: center; 
+  padding-top: 140px;
+  padding-bottom: 20px;
+}
+.eyebrow { font-family: 'Space Mono', monospace; font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 12px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 12px; }
+.eyebrow::before, .eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--glass-border); }
+
+.hero h1 { font-family: 'Instrument Serif', serif; font-size: clamp(3.5rem, 12vw, 9rem); font-style: italic; line-height: 0.9; font-weight: 400; margin-bottom: 20px; letter-spacing: -3px; }
+.hero h1 .serif { background: linear-gradient(135deg, #fff 50%, var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero h1 .highlight { background: linear-gradient(135deg, var(--beet-neon), var(--ginger-neon)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding-right: 4px; }
+
+.hero-slogan { display: block; font-size: clamp(1rem, 3vw, 1.8rem); font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: var(--beet-neon); margin-bottom: 24px; font-family: 'Manrope', sans-serif; text-shadow: 0 0 15px rgba(255, 30, 86, 0.4); }
+
+/* ─── MARQUEE (INFINITE SCROLL) ──────────────────── */
+.marquee-container { width: 100%; overflow: hidden; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); background: rgba(3,3,5,0.6); backdrop-filter: var(--blur-light); -webkit-backdrop-filter: var(--blur-light); padding: 18px 0; display: flex; white-space: nowrap; margin-bottom: 20px; }
+.marquee-content { display: flex; animation: marquee 30s linear infinite; }
+.marquee-item { font-family: 'Space Mono', monospace; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); display: flex; align-items: center; gap: 24px; padding: 0 32px; }
+.marquee-item .icon { color: var(--beet-neon); font-size: 1.1rem; }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ─── BENTO SPLIT STRUCTURE (Materia Prima) ─────── */
+section { padding: 100px 0; }
+.section-header { margin-bottom: 56px; text-align: center; }
+.section-header h2 { font-family: 'Instrument Serif', serif; font-size: clamp(2.5rem, 5.5vw, 4.2rem); font-style: italic; line-height: 1; letter-spacing: -1px; }
+
+.bento-split-system { 
+  display: grid; 
+  grid-template-columns: 1.1fr 0.9fr; 
+  gap: 32px; 
+  align-items: start;
+}
+.bento-column-letters, .bento-column-numbers { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 32px; 
+}
+
+.bento-card {
+  background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 28px; padding: 44px;
+  position: relative; overflow: hidden; backdrop-filter: var(--blur-heavy); -webkit-backdrop-filter: var(--blur-heavy);
+  transition: transform 0.5s var(--easing), border-color 0.5s ease;
+}
+.bento-card:hover { 
+  transform: translateY(-4px); 
+  border-color: rgba(255,255,255,0.15); 
+}
+
+.bento-card .icon-wrap { width: 56px; height: 56px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 24px; color: var(--beet-neon); }
+.bento-card h3 { font-size: 1.6rem; font-weight: 600; margin-bottom: 14px; letter-spacing: -0.5px; }
+.bento-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.65; font-weight: 300; }
+
+/* Micro-tags científicas internas */
+.chem-tags-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.chem-tag { font-family: 'Space Mono', monospace; font-size: 0.65rem; padding: 6px 12px; border-radius: 20px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-main); }
+
+.stat-box-layout { 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  text-align: center;
+  min-height: 190px;
+}
+.stat-box-layout .number { font-family: 'Instrument Serif', serif; font-size: 6rem; font-style: italic; line-height: 1; color: var(--ginger-neon); }
+.stat-box-layout .label { font-family: 'Space Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-main); margin-top: 12px; }
+
+.card-glow-beet::before { content: ''; position: absolute; top: -80px; right: -80px; width: 220px; height: 220px; background: var(--beet-neon); filter: blur(90px); opacity: 0.12; pointer-events: none; }
+.card-glow-ginger::before { content: ''; position: absolute; bottom: -80px; left: -80px; width: 220px; height: 220px; background: var(--ginger-neon); filter: blur(90px); opacity: 0.12; pointer-events: none; }
+
+/* ─── TIMELINE (RITUAL ARTESANAL) ──────────────── */
+.timeline { display: flex; flex-direction: column; gap: 32px; max-width: 850px; margin: 0 auto; position: relative; }
+.timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 32px; width: 1px; background: linear-gradient(to bottom, transparent, var(--glass-border) 10%, var(--glass-border) 90%, transparent); }
+.timeline-item { display: flex; gap: 40px; position: relative; }
+.timeline-node { width: 64px; height: 64px; background: #030305; border: 1px solid var(--glass-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.1rem; color: var(--text-main); position: relative; z-index: 2; box-shadow: 0 0 0 10px #030305; }
+.timeline-item:hover .timeline-node { border-color: var(--beet-neon); color: var(--beet-neon); }
+.timeline-content { padding: 16px 32px 32px; flex: 1; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; backdrop-filter: var(--blur-heavy); -webkit-backdrop-filter: var(--blur-heavy); }
+.timeline-content h4 { font-size: 1.35rem; margin-bottom: 10px; font-weight: 600; }
+.timeline-content p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; font-weight: 300; }
+.timeline-meta { display: inline-block; margin-top: 14px; font-family: 'Space Mono', monospace; font-size: 0.68rem; padding: 5px 14px; border-radius: 20px; background: rgba(255,255,255,0.02); color: var(--ginger-neon); border: 1px solid var(--glass-border); }
+
+/* ─── EL PANEL GRÁFICO QUE TE ENCANTÓ (Regresado) ─── */
+.bio-absorb-panel { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 60px; border-radius: 32px; backdrop-filter: var(--blur-heavy); -webkit-backdrop-filter: var(--blur-heavy); max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: center; }
+.bio-absorb-panel h3 { font-family: 'Instrument Serif', serif; font-size: 2.5rem; font-style: italic; margin-bottom: 14px; }
+.bio-absorb-panel p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; font-weight: 300; }
+
+.chem-bars { display: flex; flex-direction: column; gap: 24px; }
+.bar-wrap { width: 100%; }
+.bar-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.75rem; font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+.bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.04); border-radius: 10px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; width: 0; border-radius: 10px; background: linear-gradient(90deg, var(--beet-neon), var(--ginger-neon)); transition: width 1.8s var(--easing); box-shadow: 0 0 15px rgba(255, 30, 86, 0.3); }
+
+/* ─── WARNING ARCHITECTURE ──────────────────────── */
+.warning-sect { padding: 80px 0; }
+.warning-box { display: flex; gap: 32px; align-items: center; background: rgba(255, 30, 86, 0.03); padding: 44px; border-radius: 28px; border: 1px solid rgba(255, 30, 86, 0.15); backdrop-filter: var(--blur-heavy); -webkit-backdrop-filter: var(--blur-heavy); max-width: 850px; margin: 0 auto; }
+.warn-icon { font-size: 2.5rem; filter: drop-shadow(0 0 10px rgba(255,30,86,0.3)); }
+.warning-box h3 { font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: #ff8a9f; margin-bottom: 8px; }
+.warning-box p { color: #fca5a5; font-size: 0.9rem; line-height: 1.6; font-weight: 300; }
+
+/* ─── FOOTER ─────────────────────────────────────── */
+footer { padding: 100px 0 40px; text-align: center; border-top: 1px solid var(--glass-border); background: rgba(3,3,5,0.8); backdrop-filter: var(--blur-heavy); -webkit-backdrop-filter: var(--blur-heavy); position: relative; }
+footer h2 { font-family: 'Instrument Serif', serif; font-size: clamp(3.5rem, 10vw, 7.5rem); font-style: italic; opacity: 0.06; letter-spacing: -3px; margin-bottom: 40px; }
+.footer-links { display: flex; justify-content: center; gap: 32px; margin-bottom: 40px; }
+.footer-links a { color: var(--text-muted); font-size: 0.8rem; font-family: 'Space Mono', monospace; text-transform: uppercase; letter-spacing: 2px; transition: color 0.3s; }
+.footer-links a:hover { color: var(--text-main); }
+.credits { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-muted); opacity: 0.5; line-height: 1.8; }
+.credits strong { color: var(--text-main); font-weight: normal; }
+
+/* ─── INTERSECTION REVEALS ───────────────────────── */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s var(--easing), transform 0.8s var(--easing); }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE SYSTEM ──────────────────────────── */
+@media (max-width: 968px) {
+  .bento-split-system, .bio-absorb-panel { grid-template-columns: 1fr; gap: 32px; }
+  .stat-box-layout { min-height: auto; }
+}
+@media (max-width: 640px) {
+  .warning-box { flex-direction: column; text-align: center; gap: 16px; }
+  .timeline::before { left: 24px; }
+  .timeline-node { width: 48px; height: 48px; font-size: 0.9rem; }
+  .chem-bars { gap: 16px; }
+  nav { padding: 12px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="editorial-bg"></div>
+<div class="editorial-overlay"></div>
+
+<nav>
+  <div class="nav-logo">Vital Beet</div>
+  <div class="nav-badge">Probiótico Artesanal</div>
+</nav>
+
+<div class="container">
+  <section class="hero">
+    <span class="eyebrow reveal">Proyecto Escolar de Ciencias & Emprendimiento</span>
+    <h1 class="reveal" style="transition-delay: 0.1s;">
+      <span class="serif">Vital</span> <span class="highlight">Beet</span>
+    </h1>
+    <span class="hero-slogan reveal" style="transition-delay: 0.2s;">Bienestar Puro</span>
+    
+    <p class="reveal" style="max-width: 540px; color: var(--text-muted); line-height: 1.7; font-weight: 300; transition-delay: 0.3s;">
+      Un probiótico natural líquido y artesanal elaborado a base de remolacha y jengibre crudos. Utilizamos la fermentación láctica acuosa para liberar los nutrientes en su estado más bioactivo.
+    </p>
+  </section>
+</div>
+
+<div class="marquee-container">
+  <div class="marquee-content">
+    <div class="marquee-item"><span class="icon">✦</span> Optimiza la digestión y el tránsito intestinal</div>
+    <div class="marquee-item"><span class="icon">✦</span> Combate síntomas de gripes y resfriados</div>
+    <div class="marquee-item"><span class="icon">✦</span> Fortalece activamente el sistema inmune</div>
+    <div class="marquee-item"><span class="icon">✦</span> Mejora el rendimiento físico y recuperación post-ejercicio</div>
+    <div class="marquee-item"><span class="icon">✦</span> Ayuda en el control del estrés oxidativo y ansiedad</div>
+  </div>
+</div>
+
+<div class="container">
+  <section>
+    <div class="section-header reveal">
+      <span class="eyebrow">La Sinergia</span>
+      <h2>Materia Prima Viva</h2>
+    </div>
+    
+    <div class="bento-split-system">
+      <div class="bento-column-letters">
+        <div class="bento-card card-glow-beet reveal">
+          <div class="icon-wrap">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M223.45,40.07a8,8,0,0,0-7.52-7.52C139.8,28.08,78.82,51,52.82,94a87.09,87.09,0,0,0-12.76,49c.57,15.92,5.21,32,13.79,47.85l-19.51,19.5a8,8,0,0,0,11.32,11.32l19.5-19.51C81,210.73,97.09,215.37,113,215.94q1.67.06,3.33.06A86.93,86.93,0,0,0,162,203.18C205,177.18,227.93,116.21,223.45,40.07ZM153.75,189.5c-22.75,13.78-49.68,14-76.71.77l88.63-88.62a8,8,0,0,0-11.32-11.32L65.73,179c-13.19-27-13-54,.77-76.71,22.09-36.47,74.6-56.44,141.31-54.06C210.2,114.89,190.22,167.41,153.75,189.5Z"></path></svg>
+          </div>
+          <h3>Remolacha Púrpura</h3>
+          <p>Raíz tuberosa de color púrpura intenso, rica en azúcares naturales y prebióticos esenciales para alimentar a la microbiota. Su composición aporta elementos críticos para el control de la hipertensión arterial y el bienestar celular.</p>
+          
+          <div class="chem-tags-container">
+            <span class="chem-tag" style="border-color: var(--beet-neon); color: #ff8a9f;">✦ Betalaínas (Betanina)</span>
+            <span class="chem-tag">✦ Nitratos Inorgánicos</span>
+            <span class="chem-tag">✦ Potasio & Vitamina C</span>
+            <span class="chem-tag">✦ Folatos (B9)</span>
+          </div>
+        </div>
+
+        <div class="bento-card card-glow-ginger reveal">
+          <div class="icon-wrap" style="color: var(--ginger-neon);">⚡</div>
+          <h3>Jengibre Asiático</h3>
+          <p>Raíz originaria del sur de Asia utilizada en este tónico como potenciador terapéutico y biológico. Es ideal para combatir náuseas, modular inflamaciones digestivas y mejorar el estado de ánimo general.</p>
+          
+          <div class="chem-tags-container">
+            <span class="chem-tag" style="border-color: var(--ginger-neon); color: #ffe0b3;">✦ Gingerol Activo</span>
+            <span class="chem-tag">✦ Efecto Antiinflamatorio</span>
+            <span class="chem-tag">✦ Catalizador Térmico</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bento-column-numbers">
+        <div class="bento-card reveal">
+          <div class="stat-box-layout">
+            <span class="number" data-target="4">0</span>
+            <span class="label">Días Controlados</span>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; font-weight: 300; max-width: 240px;">Tiempo de fermentación láctica en medio acuoso para la liberación de nutrientes.</p>
+          </div>
+        </div>
+
+        <div class="bento-card reveal">
+          <div class="stat-box-layout">
+            <span class="number" data-target="100">0</span>
+            <span class="label">% Biodisponible</span>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; font-weight: 300; max-width: 240px;">Nutrientes digeridos previamente por bacterias benéficas listos para asimilar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-header reveal">
+      <span class="eyebrow">Cultivo y Conservación</span>
+      <h2>El Ritual Sostenible</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-node">1</div>
+        <div class="timeline-content">
+          <h4>Trocear e higienizar</h4>
+          <p>El proceso artesanal inicia cortando la remolacha y el jengibre frescos y completamente crudos en trozos medianos para exponer su superficie interna.</p>
+          <span class="timeline-meta">Materia Prima Pura</span>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-node">2</div>
+        <div class="timeline-content">
+          <h4>Mezclar en salmuera</h4>
+          <p>Une los trozos vegetales con una mezcla precisa de sal y agua filtrada dentro de un recipiente de vidrio limpio para asegurar un entorno adecuado.</p>
+          <span class="timeline-meta">Medio Acuoso Seguro</span>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-node">3</div>
+        <div class="timeline-content">
+          <h4>Fermentación anaeróbica</h4>
+          <p>Se deja fermentar el envase tapado herméticamente o protegido con un paño limpio en un lugar fresco, oscuro y libre de luz directa por un periodo estricto de 4 días.</p>
+          <span class="timeline-meta">⏱ 96 Horas de Maduración</span>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-node">4</div>
+        <div class="timeline-content">
+          <h4>Filtrado y choque de frío</h4>
+          <p>Al completarse el tiempo, el producto final debe colarse perfectamente y mantenerse siempre refrigerado en un envase cerrado con tapa para pausar la fermentación.</p>
+          <span class="timeline-meta">Listo para Servir con Hielo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="bio-absorb-panel reveal">
+      <div>
+        <span class="eyebrow">Ventaja Evolutiva</span>
+        <h3>Absorción Comparativa</h3>
+        <p>A diferencia de los suplementos sintéticos que deben desintegrarse lentamente en el estómago, Vital Beet aprovecha el estado líquido natural de raíces vivas. Esto optimiza el tránsito intestinal y acelera la repoblación de la microbiota de forma dinámica.</p>
+      </div>
+      
+      <div class="chem-bars">
+        <div class="bar-wrap reveal">
+          <div class="bar-header">
+            <span>Vital Beet (Tónico Líquido Vivo)</span>
+            <span>98%</span>
+          </div>
+          <div class="bar-bg"><div class="bar-fill" data-width="98%"></div></div>
+        </div>
+        <div class="bar-wrap reveal">
+          <div class="bar-header">
+            <span>Suplementación Encapsulada Tradicional</span>
+            <span>45%</span>
+          </div>
+          <div class="bar-bg"><div class="bar-fill" data-width="45%"></div></div>
+        </div>
+        <div class="bar-wrap reveal">
+          <div class="bar-header">
+            <span>Zumos Comerciales Pasteurizados</span>
+            <span>20%</span>
+          </div>
+          <div class="bar-bg"><div class="bar-fill" data-width="20%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="warning-sect">
+    <div class="warning-box reveal">
+      <div class="warn-icon">⚠️</div>
+      <div>
+        <h3>Efectos Secundarios y Precauciones</h3>
+        <p>Al ser un tónico altamente bioactivo, su uso excesivo puede causar complicaciones en personas con SIBO (sobrecrecimiento bacteriano). Se debe tener precaución en individuos con alergias específicas a los ingredientes o en poblaciones vulnerables como bebés sin consulta médica previa.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <h2>VITAL BEET</h2>
+  <div class="footer-links">
+    <a href="#">Fila 1: Fundamentos</a>
+    <a href="#">Fila 2: Seguridad</a>
+    <a href="#">Fila 3: Propiedades</a>
+  </div>
+  <p class="credits">
+    Proyecto de Ciencias, Investigación y Emprendimiento Escolar · 2026<br><br>
+    Desarrollado y Presentado por el <strong>Equipo Estudiantil de Ciencias</strong><br>
+    Arquitectura de Interfaz por <strong>Yessika Orsini</strong>
+  </p>
+</footer>
+
+<script>
+// Sistema de Scroll Reveal y Animación de Barras de Datos
+const scrollObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.classList.add('active');
+      
+      const barFill = e.target.querySelector('.bar-fill');
+      if(barFill) {
+        barFill.style.width = barFill.getAttribute('data-width');
+      }
+    }
+  });
+}, { threshold: 0.05, rootMargin: "0px 0px -20px 0px" });
+
+document.querySelectorAll('.reveal').forEach(el => scrollObserver.observe(el));
+
+// Contador Numérico Progresivo
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const targetValue = +el.dataset.target;
+    let current = 0;
+    const pace = targetValue / 40;
+    
+    const countInterval = setInterval(() => {
+      current += pace;
+      if (current >= targetValue) { 
+        current = targetValue; 
+        clearInterval(countInterval); 
+      }
+      el.textContent = Math.floor(current);
+    }, 25);
+    counterObserver.unobserve(el);
+  });
+}, { threshold: 0.4 });
+
+document.querySelectorAll('.number').forEach(num => counterObserver.observe(num));
+
+// Replicación Infinita del Marquee
+const marqueeWrap = document.querySelector('.marquee-content');
+const innerContent = marqueeWrap.innerHTML;
+marqueeWrap.innerHTML += innerContent;
+</script>
+</body>
+</html>
